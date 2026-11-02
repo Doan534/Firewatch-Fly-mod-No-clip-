@@ -1,0 +1,206 @@
+# Firewatch Fly
+
+Eine kleine Einzelspieler-Mod für **Firewatch**, mit der du durch die Wildnis von Wyoming fliegen kannst. Taste drücken, abheben und mit derselben Taste wieder mit echter Schwerkraft und weicher Landung zu Boden fallen.
+
+> 🇬🇧 English version: [README](README)
+
+> **Inoffizielle Fan-Mod.** Nicht mit Campo Santo, Panic oder Valve verbunden und nicht von ihnen unterstützt. Benutzung auf eigene Gefahr (siehe [Haftungsausschluss](#haftungsausschluss)).
+
+---
+
+## Funktionen
+
+- **Flugmodus per Tastendruck** – Fliegen mit `K`, ein- und ausschalten.
+- **Freie Bewegung** – vorwärts, rückwärts, seitlich, hoch und runter, mit Schnellflug.
+- **Realistischer Fall** – wenn du das Fliegen beendest, fällst du mit Beschleunigung senkrecht nach unten, und das Spiel übernimmt wieder, sobald du den Boden berührst.
+- **Weiche Landung** – die Kamera federt beim Aufkommen leicht ab, nach einem längeren Fall stärker.
+- **Körper bleibt sichtbar** – Henrys Körper dreht sich in deine Blickrichtung und neigt sich leicht in Flugrichtung, dazu ein dezentes Wippen.
+- **Kein Menü, kein Durcheinander** – keine Oberfläche, keine Config-Dateien, keine zusätzlichen Fenster.
+- **Sauberes Aufräumen** – die Mod schaltet alles, was sie pausiert, bei der Landung oder beim Entfernen wieder ein.
+- **No clip** – Du kannst durch alles durch Fliegen.
+---
+
+## Voraussetzungen
+
+| Voraussetzung | Details |
+|---|---|
+| Spiel | Firewatch (Steam, Windows) |
+| Mod-Loader | **BepInEx 5.x, x64** (getestet mit 5.4.23.5) |
+| Plattform | **Nur Windows** (die Mod liest Tasten über die Windows-Schnittstelle) |
+
+Getestet mit Firewatch auf Unity 2017.4.40 und zusammen mit dem Plugin *Firewatch Enhanced* / High FPS Fix.
+
+> ⚠️ **Nicht** BepInEx 6 und nicht die IL2CPP-Versionen verwenden. Firewatch nutzt Mono, du brauchst also **BepInEx 5**.
+
+---
+
+## Installation (Schritt für Schritt)
+
+### 1. Firewatch-Ordner finden
+
+In Steam: Rechtsklick auf **Firewatch** in der Bibliothek → **Verwalten** → **Lokale Dateien durchsuchen**.
+Das ist der Ordner mit der `Firewatch.exe`. Auf den meisten PCs sieht der Pfad so aus:
+
+```
+C:\Program Files (x86)\Steam\steamapps\common\Firewatch
+```
+
+### 2. BepInEx 5 installieren
+
+1. Öffne die [BepInEx-Releases-Seite](https://github.com/BepInEx/BepInEx/releases).
+2. Lade die **x64**-Version von BepInEx **5.4.x** für Windows herunter (der Dateiname sieht aus wie `BepInEx_win_x64_5.4.23.x.zip` oder `BepInEx_x64_5.4.23.6.zip`).
+3. Entpacke **den gesamten Inhalt der ZIP-Datei direkt in den Firewatch-Ordner**, neben die `Firewatch.exe`.
+
+Danach sollte dein Firewatch-Ordner diese Einträge enthalten:
+
+```
+Firewatch
+├── BepInEx
+├── Firewatch_Data
+├── .doorstop_version
+├── doorstop_config.ini
+├── Firewatch.exe
+├── UnityPlayer.dll
+└── winhttp.dll
+```
+
+Achte darauf, dass `winhttp.dll` und `doorstop_config.ini` **direkt neben der `Firewatch.exe`** liegen und nicht in einem Unterordner.
+
+### 3. Spiel einmal starten
+
+Starte Firewatch über Steam, warte bis zum Hauptmenü und beende das Spiel wieder.
+Dabei werden die Ordner `BepInEx\plugins`, `BepInEx\config` und weitere angelegt.
+
+### 4. Mod installieren
+
+1. Lade `FirewatchFly.dll` von der Release-Seite herunter.
+2. *(Empfohlen)* Rechtsklick auf die Datei → **Eigenschaften** → falls unten **Zulassen** erscheint, Häkchen setzen → **OK**. Windows blockiert heruntergeladene DLL-Dateien manchmal.
+3. Kopiere `FirewatchFly.dll` in diesen Ordner:
+
+```
+Firewatch\BepInEx\plugins
+```
+
+### 5. Spielen
+
+Starte Firewatch, lade einen Spielstand und drücke **K**. 🎉
+
+---
+
+## Steuerung
+
+| Taste | Aktion |
+|---|---|
+| `K`| Fliegen **ein / aus** |
+| `W` `A` `S` `D` | Vorwärts / links / rückwärts / rechts fliegen (in Blickrichtung) |
+| `Leertaste` | **Hoch** fliegen |
+| `Linke Strg-Taste` | **Runter** fliegen |
+| `Linke Umschalt-Taste` | **Schneller** fliegen (3-fach) |
+
+Wenn du die Taste beim Fliegen noch einmal drückst, **fällst** du mit Schwerkraft und landest weich. Drückst du sie während des Falls erneut, hebst du sofort wieder ab.
+
+> 💡 `K`ist die Standardtaste, die überall funktioniert.
+
+---
+
+## Einstellungen
+
+Es gibt keine Config-Datei. Wenn du Werte ändern willst (Geschwindigkeit, Schwerkraft, Stärke der Landung, …), bearbeite die Konstanten am Anfang der `FlyMod.cs` und baue die Mod neu (siehe [Selbst bauen](#selbst-bauen)).
+
+| Konstante | Standard | Bedeutung |
+|---|---|---|
+| `BaseSpeed` | `6` | Fluggeschwindigkeit in Metern pro Sekunde |
+| `FastMultiplier` | `3` | Faktor für den Schnellflug mit Umschalt |
+| `Gravity` | `18` | Wie stark du beim Fallen nach unten beschleunigst |
+| `MaxFallSpeed` | `35` | Höchste Fallgeschwindigkeit |
+| `TurnSpeed` | `540` | Wie schnell sich der Körper zur Blickrichtung dreht (Grad pro Sekunde) |
+| `MaxLeanForward` / `MaxLeanSide` | `10` / `7` | Maximale Körperneigung in Grad |
+| `BobAmount` | `0.015` | Stärke des dezenten Wippens |
+| `DipDuration` | `0.45` | Dauer des Kamera-Abfederns bei der Landung (Sekunden) |
+| `HideBodyWhileFlying` | `false` | `true` versteckt Henrys Körper beim Fliegen |
+| `EnableAnimationControl` | `false` | **Experimentell, bitte aus lassen.** Kann Spielanimationen stören (zum Beispiel das Funkgerät) |
+
+---
+
+## Fehlerbehebung
+
+**Beim Drücken von K passiert nichts.**
+- Öffne `Firewatch\BepInEx\LogOutput.log` und suche nach `Firewatch Fly`. Fehlt die Zeile, wurde die Mod nicht geladen: Prüfe, ob `FirewatchFly.dll` direkt in `BepInEx\plugins` liegt.
+- Wenn die Log-Datei fehlt oder leer ist, läuft BepInEx nicht. Prüfe, ob `winhttp.dll` und `doorstop_config.ini` neben der `Firewatch.exe` liegen.
+- Rechtsklick auf `FirewatchFly.dll` → **Eigenschaften** → **Zulassen**.
+- Probiere `F4` oder `F6`, und halte **Fn** gedrückt, falls deine Tastatur das braucht.
+
+**Ich bekomme einen BepInEx- oder Versionsfehler.**
+Stelle sicher, dass du **BepInEx 5.x x64** installiert hast und nicht Version 6 oder eine IL2CPP-Version.
+
+**Das Funkgerät oder eine andere Spielfunktion fehlt nach dem Fliegen.**
+Lass `EnableAnimationControl` auf `false` (Standard). Starte das Spiel neu und lade einen Spielstand von vor dem Problem. Wenn es weiter auftritt, entferne `FirewatchFly.dll` und prüfe, ob die Funktion zurückkommt. Melde es dann bitte mit deiner `LogOutput.log`.
+
+**Ich stecke in der Welt fest oder falle unter die Karte.**
+Lade deinen letzten Spielstand. Vermeide es, durch die Kartengrenzen zu fliegen.
+
+**Build-Fehler „Datei wird verwendet“ (beim Selbstbauen).**
+Beende Firewatch komplett, auch im Windows-Task-Manager, und baue dann erneut.
+
+---
+
+## Bekannte Probleme und Tipps
+
+- **Nur Einzelspieler.** Firewatch hat keinen Mehrspieler-Modus, die Mod ist nur für normales Einzelspieler-Spielen gedacht.
+- **Nicht speichern, während du fliegst oder fällst.** Warte, bis du gelandet bist.
+- **Story-Sequenzen:** Beim Fliegen kannst du Bereiche überspringen oder Szenen in falscher Reihenfolge auslösen. Wenn etwas kaputt aussieht, lade einen früheren Spielstand.
+- **Sichere deine Spielstände**, bevor du Mods ausprobierst.
+- Die Körperanimation ist beim Fliegen absichtlich einfach gehalten: Die Mod steuert Henrys Laufanimationen nicht, damit keine Spielfunktionen kaputtgehen.
+
+---
+
+## Deinstallation
+
+Lösche `FirewatchFly.dll` aus `Firewatch\BepInEx\plugins`.
+Das reicht. Die Mod schreibt keine Spieldateien. Um BepInEx komplett zu entfernen, lösche den Ordner `BepInEx` sowie `winhttp.dll`, `doorstop_config.ini` und `.doorstop_version` aus dem Firewatch-Ordner (damit werden auch andere BepInEx-Plugins deaktiviert).
+
+---
+
+## Selbst bauen
+
+Das brauchst du nur, wenn du die Mod ändern willst.
+
+1. Installiere das [.NET SDK](https://dotnet.microsoft.com/download).
+2. Installiere BepInEx 5 und starte das Spiel einmal (siehe oben), damit die DLLs vorhanden sind, auf die diese Mod verweist.
+3. Lege `FlyMod.cs` und `FirewatchFly.csproj` in einen gemeinsamen Ordner.
+4. Öffne `FirewatchFly.csproj` und passe `GameDir` an deinen Firewatch-Ordner an, falls er nicht am Standard-Steam-Pfad liegt.
+5. Beende Firewatch, öffne ein Terminal im Ordner und gib ein:
+
+```
+dotnet build
+```
+
+Die fertige `FirewatchFly.dll` wird automatisch nach `BepInEx\plugins` kopiert und liegt außerdem in `bin\Debug\net35`.
+
+Das Projekt verweist auf `BepInEx.dll` und die `UnityEngine`-DLLs aus deiner eigenen Spielinstallation. Sie sind in diesem Repository nicht enthalten.
+
+---
+
+## Änderungen
+
+### 1.10.1 – erste öffentliche Version
+- Flugmodus mit Umschalten per `K`
+- Fall mit Schwerkraft und weicher Landung
+- Körper dreht sich zur Blickrichtung, mit leichter Neigung und Wippen
+- Fehler behoben: Pausierte Spiel-Skripte wurden nicht wieder aktiviert, wenn man während eines Falls die Taste erneut drückte
+- Animationssteuerung standardmäßig deaktiviert
+
+---
+
+## Haftungsausschluss
+
+Dies ist eine inoffizielle Fan-Mod, die **ohne jede Gewährleistung** bereitgestellt wird. Die Benutzung erfolgt auf eigene Gefahr. Firewatch ist eine Marke von Campo Santo. Dieses Projekt ist nicht mit Campo Santo, Panic oder Valve verbunden. Es sind keine Spielinhalte enthalten.
+
+## Danksagung
+
+- [BepInEx](https://github.com/BepInEx/BepInEx) – das Plugin-Framework, auf dem diese Mod läuft
+- Danke an alle, die diese Mod getestet haben
+
+## Lizenz
+
+MIT-Lizenz – siehe [LICENSE](LICENSE).
