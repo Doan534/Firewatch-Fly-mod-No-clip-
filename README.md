@@ -91,7 +91,7 @@ Start Firewatch, load a save game and press **K**. 🎉
 
 | Key | Action |
 |---|---|
-| `K` (or `F4` / `F6`) | Turn flying **on / off** |
+| `K`| Turn flying **on / off** |
 | `W` `A` `S` `D` | Fly forward / left / backward / right (in the direction you look) |
 | `Space` | Fly **up** |
 | `Left Ctrl` | Fly **down** |
